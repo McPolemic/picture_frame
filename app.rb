@@ -4,6 +4,10 @@ require 'sinatra'
 set :bind, '0.0.0.0'
 set :port, 4000
 
+FORMATS = %w(jpg jpeg gif png)
+PICTURES_PATH = ENV.fetch("PICTURES_PATH")
+REFRESH_IN_MS = ENV.fetch("REFRESH_IN_MS", 3_000)
+
 def all_pictures(path)
   suffixes = FORMATS + FORMATS.map(&:upcase)
 
@@ -11,12 +15,10 @@ def all_pictures(path)
     search_string = File.join(path, "**/*.#{suffix}")
     Dir.glob(search_string)
   end.reject{ |path| File.size(path) < 1_000 }
+     .reject{ |path| path.downcase.include? "thumbnail" }
 end
 
-FORMATS = %w(jpg jpeg gif png)
-PICTURES_PATH = ENV.fetch("PICTURES_PATH")
 PICTURES = all_pictures(PICTURES_PATH)
-REFRESH_IN_MS = ENV.fetch("REFRESH_IN_MS", 3_000)
 
 get '/' do
   erb :index
@@ -24,7 +26,7 @@ end
 
 get '/random' do
   picture_path = PICTURES.sample
-  puts "Serving #{picture_path}"
+  logger.info "Serving #{picture_path}"
 
   send_file(picture_path)
 end
