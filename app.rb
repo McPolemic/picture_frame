@@ -7,6 +7,7 @@ set :port, 4000
 FORMATS = %w(jpg jpeg gif png)
 PICTURES_PATH = ENV.fetch("PICTURES_PATH")
 REFRESH_IN_MS = ENV.fetch("REFRESH_IN_MS", 3_000)
+MINIMUM_SIZE_IN_BYTES = ENV.fetch("MINIMUM_SIZE_IN_BYTES", 32_000)
 
 def all_pictures(path)
   suffixes = FORMATS + FORMATS.map(&:upcase)
@@ -14,7 +15,7 @@ def all_pictures(path)
   suffixes.flat_map do |suffix|
     search_string = File.join(path, "**/*.#{suffix}")
     Dir.glob(search_string)
-  end.reject{ |path| File.size(path) < 1_000 }
+  end.reject{ |path| File.size(path) < MINIMUM_SIZE_IN_BYTES }
      .reject{ |path| path.downcase.include? "thumbnail" }
 end
 
