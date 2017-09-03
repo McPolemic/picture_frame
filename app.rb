@@ -31,11 +31,6 @@ get '/random' do
   send_file(picture_path)
 end
 
-get '/public/*' do
-  picture_path = File.join(PICTURES_PATH, params[:splat].first)
-  send_file(picture_path)
-end
-
 __END__
 
 @@ index
