@@ -1,4 +1,5 @@
 #!/bin/sh
+docker build -t picture_frame .
 docker run --name=picture_frame                 \
 	   --restart=always                     \
 	   -e "REFRESH_IN_MS=30000"             \
