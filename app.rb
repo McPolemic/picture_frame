@@ -6,8 +6,8 @@ set :port, 4000
 
 FORMATS = %w(jpg jpeg gif png)
 PICTURES_PATH = ENV.fetch("PICTURES_PATH")
-REFRESH_IN_MS = ENV.fetch("REFRESH_IN_MS", 3_000)
-MINIMUM_SIZE_IN_BYTES = ENV.fetch("MINIMUM_SIZE_IN_BYTES", 32_000)
+REFRESH_IN_MS = ENV.fetch("REFRESH_IN_MS", 3_000).to_i
+MINIMUM_SIZE_IN_BYTES = ENV.fetch("MINIMUM_SIZE_IN_BYTES", 32_000).to_i
 
 def all_pictures(path)
   suffixes = FORMATS + FORMATS.map(&:upcase)
@@ -52,6 +52,7 @@ body {
   background-color: black;
 }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/object-fit-images/3.2.3/ofi.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
             integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
             crossorigin="anonymous"></script>
@@ -60,6 +61,8 @@ $(document).ready(function() {
   setInterval(function() {
     $('img').prop("src", "/random?dummy=" + Date.now());
   }, <%= REFRESH_IN_MS %>);
+
+  objectFitImages();
 });
     </script>
   </head>
