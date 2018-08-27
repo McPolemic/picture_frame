@@ -6,5 +6,5 @@ docker run --name=picture_frame                 \
 	   -e "MINIMUM_SIZE_IN_BYTES=30000"     \
 	   -d                                   \
 	   -p 4000:4000                         \
-	   -v /media/storage/Pictures:/pictures \
+	   -v /media/storage/Pictures:/media/storage/Pictures \
 	   picture_frame
